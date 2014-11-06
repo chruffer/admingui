@@ -1,0 +1,50 @@
+
+<!-- @todo: Proper Layout / Containers are testing objects -->
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="panel panel-default">
+				<div class="panel-header">User: {{user}}</div>
+				<div class="panel-body" ng-controller="LoginCtrl">
+				<button type="submit" class="btn btn-default" ng-click="logout()">Log out</button>	
+				</div>
+			</div>
+								
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-sm-3">
+			<div class="panel panel-default">
+				<div class="panel-header">Create Principal</div>
+				<div class="panel-body">
+					<input ng-model="newPrincipalName" type="text" name="newPrincipalName" value="" placeholder="Principal Name">
+					<button type="submit" class="btn btn-default" ng-click="createPrincipalFunc()">Create</button>	
+				</div>
+			</div>
+								
+		</div>
+	</div>
+</div>
+
+<div class="container">
+	<div class="row">
+		<div class="col-md-10">
+			<div class="panel panel-default">
+				<div class="panel-header">Principal List</div>
+				<div class="panel-body">
+					<ul class="principals">
+						<li ng-repeat="principal in principals">
+							<p>Principal: </p><p>Created by: </p>
+						</li>
+					</ul>
+
+				</div>
+			</div>
+								
+		</div>
+	</div>
+</div>
