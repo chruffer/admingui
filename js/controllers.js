@@ -2,14 +2,22 @@
 
 var adminControllers = angular.module('adminControllers',[]);
 
+//	include Controller (inactive)
+
+/*paymentAdminApp.controller('includeCtrl',['$scope', function($scope){
+	$scope.templates = 
+		[ 	{name: 'navbar', url: 'partials/navbar.html'},
+			{name: 'navbarblack', url: 'partials/navbarblack.html'},
+		];
+	$scope.template = $scope.templates[0];
+}]);*/
+
 adminControllers.controller('LoginCtrl', ['$scope', '$http', '$log', '$location',
  	function($scope, $http, $log, $location){
 
 		$scope.$log = $log
 
 		$scope.login = function(){
-			$log.info('login function call')
-			//$http.defaults.headers.post['ContentType'] = 'text/plain'
 			$http({
     				url: 'http://localhost:8080/v1/authorization/text',
     				dataType: 'text',
@@ -21,22 +29,19 @@ adminControllers.controller('LoginCtrl', ['$scope', '$http', '$log', '$location'
     			}).
 				error(function(data, status, headers, config) {
   					$location.url('/login')
-					$log.info("fail")
 				}).
   				success(function(data, status, headers, config) {
   					$location.url('/adminpanel');
-					$log.info("success" + status + data)
 				})
 		};
 
+		// manual logout via "ng-controller='LoginCtrl'"
 
 		$scope.logout = function(){
-			$log.info('logout function call')
 			//$http.defaults.headers.post['ContentType'] = 'text/plain'
 			$http.delete("http://localhost:8080/v1/authorization").
   				success(function(data, status, headers, config) {
   					$location.url('/login');
-					$log.info(data)
 				}).
 				error(function(data, status, headers, config) {
 					$log.info("logout failed")
@@ -56,14 +61,27 @@ adminControllers.controller('AdminCtrl', ['$scope', '$http', '$log', '$location'
 				$log.error("AP user call failed")
 			});
 
-		$log.info('adminController user');
+
+		$scope.principals = [
+		{'id': '1', 'name': 'firma1','author': 'author1' },
+		{'id': '2', 'name': 'firma2','author': 'author2' },
+		{'id': '3', 'name': 'firma3','author': 'author3' },
+		];	
+
+		/*$http.get("http://localhost:8080/v1/princial").
+			success(function(data){
+				$log.info(data.Response)
+				$scope.principals = data.Response
+			}).
+			error(function(data){
+				$log.error("AP user call failed")
+			});*/
+
 
 		// Function: Add New Principal
 
 		$scope.createPrincipalFunc = function(){
-			//$log.info("Principal Name: " + $scope.newPrincipalName)
 			if ($scope.newPrincipalName > ""){
-				$log.info("Principal Name: " + $scope.newPrincipalName)
 				$http({
 					url: 'http://localhost:8080/v1/principal',
 					dataType: 'json',
@@ -73,8 +91,10 @@ adminControllers.controller('AdminCtrl', ['$scope', '$http', '$log', '$location'
 						"ContentType": "application/json"
 					}	
 				}).	
-				error(function(data){
-					$log.info(data)
+				error(function(){
+				}).
+				success(function(){
+
 				})
 			}
 			

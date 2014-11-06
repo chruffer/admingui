@@ -27,30 +27,28 @@ paymentAdminApp.config(['$routeProvider', '$httpProvider',
 	}
 ]);
 
+
+
 // this interceptor is used for auth checking on every req
 paymentAdminApp.factory('httpInterceptor', ['$q', '$location', '$log', function($q, $location, $log) {
 	return {
+
+		// Valid response Interceptor
 		'response': function(response) {
 
-		  // redirect to login
 		 $log.info(response.status + ' Valid interceptor running(inactive)')
 		  
 		  return response;
 		},
 
+		// Error response Interceptor
 		'responseError': function(response) {
-			$log.info('interceptor responseError'+response.status )
 			if (response.status == 415 || response.status == 401 ){
 				$location.url('/login');
 		  }
 
-
-		  // redirect to login
-
-
-		  $log.info('Final status response: ' + response.status)
 		  return $q.reject(response);
-		  //return response;
+
 		}
 	};
 }]);
