@@ -7,10 +7,7 @@ var paymentAdminApp = angular.module('paymentAdminApp',[
 
 paymentAdminApp.config(['$routeProvider', '$httpProvider',
 	function($routeProvider, $httpProvider) {
-
 		$httpProvider.interceptors.push('httpInterceptor');
-		
-
 		$routeProvider.
 			when('/login', {
 				templateUrl: 'partials/loginscreen.html',
@@ -18,16 +15,17 @@ paymentAdminApp.config(['$routeProvider', '$httpProvider',
 			}).
 			when('/adminpanel', {
 				templateUrl: 'partials/adminpanel.html',
-				controller: 'AdminCtrl'				
+				controller: 'AdminCtrl'
+			}).	
+			when('/currency', {
+				templateUrl: 'partials/currency.html',
+				controller: 'CurrencyCtrl'
 			}).
-
 			otherwise({
 				redirectTo: '/adminpanel'
 			});
 	}
 ]);
-
-
 
 // this interceptor is used for auth checking on every req
 paymentAdminApp.factory('httpInterceptor', ['$q', '$location', '$log', function($q, $location, $log) {
@@ -35,20 +33,15 @@ paymentAdminApp.factory('httpInterceptor', ['$q', '$location', '$log', function(
 
 		// Valid response Interceptor
 		'response': function(response) {
-
-		 $log.info(response.status + ' Valid interceptor running(inactive)')
-		  
-		  return response;
+			$log.info(response.status + ' Valid interceptor running(inactive)')
+		  	return response;
 		},
-
 		// Error response Interceptor
 		'responseError': function(response) {
 			if (response.status == 401){
 				$location.url('/login');
-		  }
-
+			}
 		  return $q.reject(response);
-
 		}
 	};
 }]);
