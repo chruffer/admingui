@@ -1,35 +1,10 @@
+	<div class="row" ng-app="App">
+	  <div class="large-12 columns" ng-controller="NavCtrl">
+			<nav class="nav-menu" menu-data="menu"></nav>
 
-<!-- @todo: Proper Layout / Containers are testing objects -->
-<div class="container">
-	<div class="row">
-		<div class="col-sm-3">
-			<div class="panel panel-default">
-				<div class="panel-header">Create Principal</div>
-				<div class="panel-body">
-					<input ng-model="newPrincipalName" type="text" name="newPrincipalName" value="" placeholder="Principal Name">
-					<button type="submit" class="btn btn-default" ng-click="createPrincipalFunc()">Create</button>	
-				</div>
-			</div>
-								
-		</div>
+          <!--             <nav class="top-bar">
+            	    		<section class="anav-menu top-bar-section" menu-data="menu"></section>
+                		</nav> 
+-->
+	  </div>
 	</div>
-</div>
-
-<div class="container">
-	<div class="row">
-		<div class="col-md-10">
-			<table class="table table-striped">
-				<tr>
-					<th>ID</th>
-					<th>Principal Name</th>
-					<th>Created By</th>
-				</tr>
-				<tr ng-repeat="principal in principals">
-					<td>{{principal.id}}</th>
-					<td>{{principal.name}}</th>
-					<td>{{principal.author}}</th>
-				</tr>
-			</table>						
-		</div>
-	</div>
-</div>
