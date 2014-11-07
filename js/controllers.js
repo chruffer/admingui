@@ -30,30 +30,27 @@ adminControllers.controller('NavCtrl', ['$scope','$location', function($scope,$l
 				{text:'Create new Provider', href:'/createprovider'},
 				{text:'View Providers', href:'/viewprovider'},
 				{text:'Modify Provider', href:'/modifyprovider'}
-			]}
+			]},
+			{text: 'Currency', href:'/#/currency'},
+			{text: 'Logout', href:'/#/login'}
 	]
 
 	
 }]);
 
-
 adminControllers.directive('navMenu', ['$parse', '$compile', function($parse, $compile) {
     return {
-        restrict: 'C', //Element
+        restrict: 'C', //Class
         scope:true,
-        link: function (scope, element, attrs)
-        {
+        link: function (scope, element, attrs){
             scope.selectedNode = null;
 
             scope.$watch( attrs.menuData, function(val)
             {
-
-                var template = angular.element('<ul id="parentTreeNavigation"><li ng-repeat="node in ' + attrs.menuData + '" ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click="{{node.click}}" target="{{node.target}}" >{{node.text}}</a><sub-navigation-tree></sub-navigation-tree></li></ul>');
-
+                var template = angular.element('<ul id="parentTreeNavigation"><li ng-repeat="node in ' + attrs.menuData + '" ng-class=""><a ng-href="{{node.href}}">{{node.text}}</a><sub-navigation-tree></sub-navigation-tree></li></ul>');
                 var linkFunction = $compile(template);
                 linkFunction(scope);
-                element.html(null).append( template );
-
+                element.html(null).append(template);
             }, true );
         }
     };
@@ -69,8 +66,7 @@ adminControllers.directive('navMenu', ['$parse', '$compile', function($parse, $c
 
             if(scope.tree.children && scope.tree.children.length )
             {
-                var template = angular.element('<ul class="dropdown "><li ng-repeat="node in tree.children" node-id={{node.' + attrs.nodeId + '}}  ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click="{{node.click}}" target="{{node.target}}" ng-bind-html-unsafe="node.text">{{node.text}}</a><sub-navigation-tree tree="node"></sub-navigation-tree></li></ul>');
-
+                var template = angular.element('<ul class="dropdown "><li ng-repeat="node in tree.children" node-id={{node.' + attrs.nodeId + '}}  ng-class=""><a ng-href="{{node.href}}"  target="{{node.target}}" ng-bind-html-unsafe="node.text">{{node.text}}</a><sub-navigation-tree tree="node"></sub-navigation-tree></li></ul>');
                 var linkFunction = $compile(template);
                 linkFunction(scope);
                 element.replaceWith( template );
@@ -82,14 +78,6 @@ adminControllers.directive('navMenu', ['$parse', '$compile', function($parse, $c
         }
      };
 }]);
-
-
-
-
-
-
-
-
 
 adminControllers.controller('LoginCtrl', ['$scope', '$http', '$log', '$location',
  	function($scope, $http, $log, $location){
@@ -106,27 +94,41 @@ adminControllers.controller('LoginCtrl', ['$scope', '$http', '$log', '$location'
         				"Content-Type": "text/plain"
     				}
     			}).
-				error(function(data, status, headers, config) {
-  					$location.url('/login')
-				}).
   				success(function(data, status, headers, config) {
   					$location.url('/adminpanel');
+				}).
+				error(function(data, status, headers, config) {
+  					$location.url('/login')
 				})
 		};
 
 		// manual logout via "ng-controller='LoginCtrl'"
+		$http.delete("http://localhost:8080/v1/authorization").
+			success(function(data, status, headers, config) {
+				$location.url('/login');
+			}).
+			error(function(data, status, headers, config) {
+				$log.info("logout failed")
+			})
 
-		$scope.logout = function(){
-			//$http.defaults.headers.post['ContentType'] = 'text/plain'
-			$http.delete("http://localhost:8080/v1/authorization").
-  				success(function(data, status, headers, config) {
-  					$location.url('/login');
-				}).
-				error(function(data, status, headers, config) {
-					$log.info("logout failed")
-				})
-		};
-		
+}])
+
+adminControllers.controller('CurrencyCtrl', ['$scope', '$http', '$log', '$location',
+ 	function($scope, $http, $log, $location){
+
+		$http({
+				url: 'http://localhost:8080/v1/currency',
+				dataType: 'json',
+				method: 'GET'
+			}).
+			success(function(data, status, headers, config) {
+				$scope.currency = data.Response;
+
+			}).
+			error(function(data, status, headers, config) {
+				$scope.$currency = data.Status;	
+			})
+	
 }])
 
 adminControllers.controller('AdminCtrl', ['$scope', '$http', '$log', '$location',
