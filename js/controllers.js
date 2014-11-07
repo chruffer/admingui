@@ -16,21 +16,22 @@ adminControllers.controller('NavCtrl', ['$scope','$location', function($scope,$l
 	$scope.breadcrumbs = [];
 	$scope.menu = [
 			{text: 'Admin Panel', href:'/#/adminpanel'},
-			{text: 'Principal', href:'/princial', children: [
-				{text:'Create new Principal', href:'/createprincipal'},
-				{text:'View Principals', href:'/viewprincipal'},
-				{text:'Modify Principals', href:'/modifyprincipal'}
+			{text: 'Principal', href:'/#/princial', children: [
+				{text:'Create new Principal', href:'/#/createprincipal'},
+				{text:'View Principals', href:'/#/viewprincipal'},
+				{text:'Modify Principals', href:'/#/modifyprincipal'}
 			]},
-			{text: 'Project', href:'/project', children: [
-				{text:'Create new Project', href:'/createproject'},
-				{text:'View Projects', href:'/viewproject'},
-				{text:'Modify Projects', href:'/modifyproject'}
+			{text: 'Project', href:'/#/project', children: [
+				{text:'Create new Project', href:'/#/createproject'},
+				{text:'View Projects', href:'/#/viewproject'},
+				{text:'Modify Projects', href:'/#/modifyproject'}
 			]},
-			{text: 'Principal', href:'/provider', children: [
-				{text:'Create new Provider', href:'/createprovider'},
-				{text:'View Providers', href:'/viewprovider'},
-				{text:'Modify Provider', href:'/modifyprovider'}
-			]}
+			{text: 'Principal', href:'/#/provider', children: [
+				{text:'Create new Provider', href:'/#/createprovider'},
+				{text:'View Providers', href:'/#/viewprovider'},
+				{text:'Modify Provider', href:'/#/modifyprovider'}
+			]},
+			{text: 'Logout', href:'/#/adminpanel'}
 	]
 
 	
@@ -48,7 +49,7 @@ adminControllers.directive('navMenu', ['$parse', '$compile', function($parse, $c
             scope.$watch( attrs.menuData, function(val)
             {
 
-                var template = angular.element('<ul id="parentTreeNavigation"><li ng-repeat="node in ' + attrs.menuData + '" ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click="{{node.click}}" target="{{node.target}}" >{{node.text}}</a><sub-navigation-tree></sub-navigation-tree></li></ul>');
+                var template = angular.element('<ul class="nav navbar-nav" id="parentTreeNavigation"><li ng-repeat="node in ' + attrs.menuData + '" ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click:"{{node.click}} {{node.special}}" target="{{node.target}}" >{{node.text}}</a><sub-navigation-tree></sub-navigation-tree></li></ul>');
 
                 var linkFunction = $compile(template);
                 linkFunction(scope);
@@ -69,7 +70,7 @@ adminControllers.directive('navMenu', ['$parse', '$compile', function($parse, $c
 
             if(scope.tree.children && scope.tree.children.length )
             {
-                var template = angular.element('<ul class="dropdown "><li ng-repeat="node in tree.children" node-id={{node.' + attrs.nodeId + '}}  ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click="{{node.click}}" target="{{node.target}}" ng-bind-html-unsafe="node.text">{{node.text}}</a><sub-navigation-tree tree="node"></sub-navigation-tree></li></ul>');
+                var template = angular.element('<ul class="dropdown "><li class="active" ng-repeat="node in tree.children" node-id={{node.' + attrs.nodeId + '}}  ng-class="{active:node.active && node.active==true, \'has-dropdown\': !!node.children && node.children.length}"><a ng-href="{{node.href}}" ng-click:"{{node.click}}" target="{{node.target}}" ng-bind-html-unsafe="node.text">{{node.text}}</a><sub-navigation-tree tree="node"></sub-navigation-tree></li></ul>');
 
                 var linkFunction = $compile(template);
                 linkFunction(scope);
@@ -186,3 +187,33 @@ adminControllers.controller('AdminCtrl', ['$scope', '$http', '$log', '$location'
 
 }])
 
+
+
+adminControllers.controller('PrincipalCtrl', ['$scope', '$http', '$log', '$location',
+	function($scope, $http, $log, $location){
+
+		$scope.createPrincipalFunc = function(){
+			if ($scope.newPrincipalName > ""){
+				$http({
+					url: 'http://localhost:8080/v1/principal',
+					dataType: 'json',
+					method: 'PUT',
+					data: {"Name": $scope.newPrincipalName},
+					headers:{
+						"ContentType": "application/json"
+					}	
+				}).	
+				error(function(){
+				}).
+				success(function(){
+
+				})
+			}
+			
+			else {
+				alert("Enter new Principal Name")
+			}
+		}
+
+	
+}])

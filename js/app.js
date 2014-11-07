@@ -22,7 +22,7 @@ paymentAdminApp.config(['$routeProvider', '$httpProvider',
 			}).
 
 			otherwise({
-				redirectTo: '/login'
+				redirectTo: '/adminpanel'
 			});
 	}
 ]);
@@ -43,7 +43,7 @@ paymentAdminApp.factory('httpInterceptor', ['$q', '$location', '$log', function(
 
 		// Error response Interceptor
 		'responseError': function(response) {
-			if (response.status == 415 || response.status == 401 ){
+			if (response.status == 401){
 				$location.url('/login');
 		  }
 
