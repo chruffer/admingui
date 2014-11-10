@@ -162,28 +162,7 @@ adminControllers.controller('AdminCtrl', ['$scope', '$http', '$log', '$location'
 
 		// Function: Add New Principal
 
-		$scope.createPrincipalFunc = function(){
-			if ($scope.newPrincipalName > ""){
-				$http({
-					url: 'http://localhost:8080/v1/principal',
-					dataType: 'json',
-					method: 'PUT',
-					data: {"Name": $scope.newPrincipalName},
-					headers:{
-						"ContentType": "application/json"
-					}	
-				}).	
-				error(function(){
-				}).
-				success(function(){
-
-				})
-			}
-			
-			else {
-				alert("Enter new Principal Name")
-			}
-		}
+		
 
 
 
@@ -195,7 +174,7 @@ adminControllers.controller('PrincipalCtrl', ['$scope', '$http', '$log', '$locat
 	function($scope, $http, $log, $location){
 
 		$scope.createPrincipalFunc = function(){
-			if ($scope.newPrincipalName > ""){
+			if ($scope.newPrincipalName != ""){
 				$http({
 					url: 'http://localhost:8080/v1/principal',
 					dataType: 'json',
@@ -204,18 +183,49 @@ adminControllers.controller('PrincipalCtrl', ['$scope', '$http', '$log', '$locat
 					headers:{
 						"ContentType": "application/json"
 					}	
-				}).	
-				error(function(){
-				}).
-				success(function(){
-
 				})
 			}
 			
 			else {
 				alert("Enter new Principal Name")
 			}
+		};
+	
+
+		$scope.viewPrincipalFunc = function(){
+			if ($scope.viewPrincipal != ""){
+				$http.get("http://localhost:8080/v1/principal/" + $scope.viewPrincipal).
+				success(function(data){
+					$scope.principal = data.Response
+				}).
+				error(function(data){
+					$log.error("AP user call failed / Principal not found")
+				})
+
+
+			}
+			
+			else {
+				alert("Enter new Principal Name")
+			}
+		};
+
+		$scope.test = function(id){
+
+			var bla = "editorEnabled"+id
+			$log.info(bla)
+			bla = !bla
 		}
+		/*$scope.modPrincipalFunc = function(){
+			if ($scope.modPrincipal != ""){
+				$http({
+					url: 'http://localhost:8080/v1/principal/'
+				})
+			}
+		};*/
+
+
+
 
 	
-}])
+}]);

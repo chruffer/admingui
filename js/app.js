@@ -21,6 +21,10 @@ paymentAdminApp.config(['$routeProvider', '$httpProvider',
 				templateUrl: 'partials/currency.html',
 				controller: 'CurrencyCtrl'
 			}).
+			when('/createprincipal', {
+				templateUrl: 'partials/principal.html',
+				controller: 'PrincipalCtrl'
+			}).
 			otherwise({
 				redirectTo: '/adminpanel'
 			});
