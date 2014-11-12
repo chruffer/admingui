@@ -6,3 +6,8 @@
 body {
  
 }
+
+nav.nav-menu li{
+	display: inline;
+	margin-right: 1em
+}

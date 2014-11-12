@@ -1,0 +1,8 @@
+<ul id="parentTreeNavigation">
+	<li ng-repeat="node in menu">
+		<a ng-href="{{node.href}}">{{node.text}}</a>
+		<ul ng-repeat="child in node.children">
+			<li><a ng-href="{{child.href}}">{{child.text}}</a></li>
+		</ul>
+	</li>
+</ul>
