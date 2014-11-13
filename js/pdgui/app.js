@@ -2,7 +2,11 @@
 
 var paymentAdminApp = angular.module('paymentAdminApp',[
 	'ngRoute',
-	'adminControllers'
+	'indexControllers',
+	'navigationModule',
+	'currencyModule',
+	'principalModule',
+	'userModule'
 	]);
 
 paymentAdminApp.config(['$routeProvider', '$httpProvider',
@@ -13,9 +17,9 @@ paymentAdminApp.config(['$routeProvider', '$httpProvider',
 				templateUrl: 'partials/loginscreen.html',
 				controller: 'LoginCtrl'
 			}).
-			when('/adminpanel', {
+			when('/', {
 				templateUrl: 'partials/adminpanel.html',
-				controller: 'AdminCtrl'
+				controller: 'IndexCtrl'
 			}).	
 			when('/currency', {
 				templateUrl: 'partials/currency.html',
@@ -49,3 +53,26 @@ paymentAdminApp.factory('httpInterceptor', ['$q', '$location', '$log', function(
 		}
 	};
 }]);
+
+
+var basicControllers = angular.module('indexControllers',[]);
+
+basicControllers.controller('IndexCtrl', ['$scope', '$http', '$log', '$location',
+	function($scope, $http, $log, $location){
+		$http.get("http://localhost:8080/v1/user").
+			success(function(data){
+				$log.info(data.Response)
+				$scope.user = data.Response
+			}).
+			error(function(data){
+				$log.error("AP user call failed")
+			});
+}])
+
+basicControllers.directive('navMenu', ['$parse', '$compile', function($parse, $compile) {
+    return {
+        restrict: 'C', //Class
+        scope:true,
+        templateUrl: 'partials/navigation.html'
+    };
+}])
